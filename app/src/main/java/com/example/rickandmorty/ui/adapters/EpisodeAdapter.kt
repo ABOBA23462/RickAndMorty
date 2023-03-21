@@ -23,7 +23,7 @@ class EpisodeAdapter(val onItemClick: (id: Int) -> Unit) :
         }
 
         fun onBind(item: EpisodeModel?) = with(binding) {
-            binding.tvEpisodeName.text = item?.name
+            tvEpisodeName.text = item?.name
             tvEpisodeAirData.text = item?.air_date
             tvEpisodeCode.text = item?.episode
             tvEpisodeCreated.text = item?.created
