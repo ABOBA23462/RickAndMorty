@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.rickandmorty.databinding.ItemCharactersBinding
+import com.example.rickandmorty.extensions.setImage
 import com.example.rickandmorty.models.CharacterModel
 
 class CharacterAdapter(val onItemClick: (id: Int) -> Unit) :
@@ -28,7 +28,7 @@ class CharacterAdapter(val onItemClick: (id: Int) -> Unit) :
             tvCharacterStatus.text = item?.status
             tvCharacterSpecies.text = item?.species
             tvCharacterType.text = item?.type
-            Glide.with(ivCharactersPicture.context).load(item?.image).into(ivCharactersPicture)
+            ivCharactersPicture.setImage(item!!.image)
         }
     }
 

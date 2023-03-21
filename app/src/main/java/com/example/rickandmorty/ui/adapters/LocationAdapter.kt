@@ -16,8 +16,8 @@ class LocationAdapter(val onItemClick: (id: Int) -> Unit) :
 
         init {
             itemView.setOnClickListener {
-                getItem(absoluteAdapterPosition)?.let { character ->
-                    onItemClick(character.id)
+                getItem(absoluteAdapterPosition)?.let { location ->
+                    onItemClick(location.id)
                 }
             }
         }
