@@ -1,30 +1,32 @@
 package com.example.rickandmorty.ui.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.databinding.ItemLocationsBinding
 import com.example.rickandmorty.models.LocationsModel
 
-class LocationAdapter : RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
+class LocationAdapter(val onItemClick: (id: Int) -> Unit) :
+    PagingDataAdapter<LocationsModel, LocationAdapter.ViewHolder>(diffUtil) {
 
-    private var list: List<LocationsModel> = ArrayList()
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<LocationsModel>) {
-        this.list = list
-        notifyDataSetChanged()
-    }
-
-    class ViewHolder(private val binding: ItemLocationsBinding) :
+    inner class ViewHolder(private val binding: ItemLocationsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(locationsModel: LocationsModel) = with(binding) {
-            tvLocationName.text = locationsModel.name
-            tvLocationType.text = locationsModel.type
-            tvLocationDimension.text = locationsModel.dimension
-            tvLocationCreated.text = locationsModel.created
+        init {
+            itemView.setOnClickListener {
+                getItem(absoluteAdapterPosition)?.let { character ->
+                    onItemClick(character.id)
+                }
+            }
+        }
+
+        fun onBind(item: LocationsModel?) = with(binding) {
+            tvLocationName.text = item?.name
+            tvLocationType.text = item?.type
+            tvLocationDimension.text = item?.dimension
+            tvLocationCreated.text = item?.created
         }
     }
 
@@ -39,9 +41,25 @@ class LocationAdapter : RecyclerView.Adapter<LocationAdapter.ViewHolder>() {
         )
     }
 
-    override fun getItemCount(): Int = list.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(list[position])
+        holder.onBind(getItem(position))
+    }
+
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<LocationsModel>() {
+            override fun areItemsTheSame(
+                oldItem: LocationsModel,
+                newItem: LocationsModel
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: LocationsModel,
+                newItem: LocationsModel
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
     }
 }

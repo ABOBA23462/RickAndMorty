@@ -1,40 +1,34 @@
 package com.example.rickandmorty.ui.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.rickandmorty.databinding.ItemCharactersBinding
 import com.example.rickandmorty.models.CharacterModel
 
-class CharacterAdapter(val onItemClick: (characterModel: CharacterModel) -> Unit) :
-    RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
-
-    private var list: List<CharacterModel> = ArrayList()
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<CharacterModel>) {
-        this.list = list
-        notifyDataSetChanged()
-    }
+class CharacterAdapter(val onItemClick: (id: Int) -> Unit) :
+    PagingDataAdapter<CharacterModel, CharacterAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: ItemCharactersBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
-                onItemClick(list[adapterPosition])
+                getItem(absoluteAdapterPosition)?.let { character ->
+                    onItemClick(character.id)
+                }
             }
         }
 
-        fun onBind(characterModel: CharacterModel) = with(binding) {
-            tvCharacterName.text = characterModel.name
-            tvCharacterStatus.text = characterModel.status
-            tvCharacterSpecies.text = characterModel.species
-            tvCharacterType.text = characterModel.type
-            Glide.with(ivCharactersPicture.context).load(characterModel.image)
-                .into(ivCharactersPicture)
+        fun onBind(item: CharacterModel?) = with(binding) {
+            binding.tvCharacterName.text = item?.name
+            tvCharacterStatus.text = item?.status
+            tvCharacterSpecies.text = item?.species
+            tvCharacterType.text = item?.type
+            Glide.with(ivCharactersPicture.context).load(item?.image).into(ivCharactersPicture)
         }
     }
 
@@ -49,9 +43,25 @@ class CharacterAdapter(val onItemClick: (characterModel: CharacterModel) -> Unit
         )
     }
 
-    override fun getItemCount(): Int = list.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(list[position])
+        holder.onBind(getItem(position))
+    }
+
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<CharacterModel>() {
+            override fun areItemsTheSame(
+                oldItem: CharacterModel,
+                newItem: CharacterModel
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: CharacterModel,
+                newItem: CharacterModel
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
     }
 }

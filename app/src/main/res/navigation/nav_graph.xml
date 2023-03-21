@@ -19,6 +19,7 @@
         android:name="com.example.rickandmorty.ui.fragments.location.LocationFragment"
         android:label="fragment_location"
         tools:layout="@layout/fragment_location" >
+
         <action
             android:id="@+id/action_locationFragment_to_locationDetailFragment"
             app:destination="@id/locationDetailFragment" />
@@ -38,34 +39,25 @@
         android:label="fragment_character_detail"
         tools:layout="@layout/fragment_character_detail" >
         <argument
-            android:name="image"
-            app:argType="string" />
-        <argument
-            android:name="name"
-            app:argType="string" />
+            android:name="id"
+            app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/locationDetailFragment"
-        android:name="com.example.rickandmorty.ui.fragments.location.locationdetail.locationDetailFragment"
-        android:label="fragment_location_detail"
-        tools:layout="@layout/fragment_location_detail" >
-        <argument
-            android:name="name"
-            app:argType="string" />
-        <argument
-            android:name="type"
-            app:argType="string" />
-    </fragment>
+
     <fragment
         android:id="@+id/episodeDetailFragment"
         android:name="com.example.rickandmorty.ui.fragments.episode.episodedetail.EpisodeDetailFragment"
         android:label="fragment_episode_detail"
         tools:layout="@layout/fragment_episode_detail" >
         <argument
-            android:name="name"
-            app:argType="string" />
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationDetailFragment"
+        android:name="com.example.rickandmorty.ui.fragments.location.locationdetail.LocationDetailFragment"
+        android:label="LocationDetailFragment" >
         <argument
-            android:name="episode"
-            app:argType="string" />
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 </navigation>
