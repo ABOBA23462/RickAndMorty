@@ -24,7 +24,7 @@ class CharacterAdapter(val onItemClick: (id: Int) -> Unit) :
         }
 
         fun onBind(item: CharacterModel?) = with(binding) {
-            binding.tvCharacterName.text = item?.name
+            tvCharacterName.text = item?.name
             tvCharacterStatus.text = item?.status
             tvCharacterSpecies.text = item?.species
             tvCharacterType.text = item?.type
