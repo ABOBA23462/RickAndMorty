@@ -1,5 +1,7 @@
 package com.example.rickandmorty.ui.fragments.location
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
@@ -10,8 +12,10 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentLocationBinding
 import com.example.rickandmorty.ui.adapters.LocationAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LocationFragment :
     BaseFragment<FragmentLocationBinding, LocationViewModel>(R.layout.fragment_location) {
 
@@ -27,9 +31,13 @@ class LocationFragment :
     }
 
     override fun setupObserves() {
-        lifecycleScope.launch {
-            viewModel.fetchLocation().collect {
-                locationAdapter.submitData(it)
+        if (isNetworkAvailable()) {
+            viewModel.fetchLocation().observe(viewLifecycleOwner) {
+                locationAdapter.submitList(it.results)
+            }
+        }else{
+            viewModel.getAll().observe(viewLifecycleOwner){
+                locationAdapter.submitList(it)
             }
         }
     }
@@ -38,5 +46,11 @@ class LocationFragment :
         val action: NavDirections =
             LocationFragmentDirections.actionLocationFragmentToLocationDetailFragment(id)
         findNavController().navigate(action)
+    }
+
+    private fun isNetworkAvailable(): Boolean{
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeInfo = connectivityManager.activeNetworkInfo
+        return activeInfo != null && activeInfo.isConnected
     }
 }

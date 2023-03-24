@@ -1,6 +1,9 @@
 package com.example.rickandmorty.ui.fragments.episode
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
@@ -10,13 +13,15 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentEpisodeBinding
 import com.example.rickandmorty.ui.adapters.EpisodeAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class EpisodeFragment :
     BaseFragment<FragmentEpisodeBinding, EpisodeViewModel>(R.layout.fragment_episode) {
 
     override val binding by viewBinding(FragmentEpisodeBinding::bind)
-    override val viewModel: EpisodeViewModel by activityViewModels()
+    override val viewModel: EpisodeViewModel by viewModels()
     private var episodeAdapter = EpisodeAdapter(this::onItemClick)
 
     override fun initialize() {
@@ -27,9 +32,13 @@ class EpisodeFragment :
     }
 
     override fun setupObserves() {
-        lifecycleScope.launch {
-            viewModel.fetchEpisode().collect {
-                episodeAdapter.submitData(it)
+        if (isNetworkAvailable()) {
+            viewModel.fetchEpisode().observe(viewLifecycleOwner) {
+                episodeAdapter.submitList(it.results)
+            }
+        }else{
+            viewModel.getAll().observe(viewLifecycleOwner){
+                episodeAdapter.submitList(it)
             }
         }
     }
@@ -38,5 +47,11 @@ class EpisodeFragment :
         val action: NavDirections =
             EpisodeFragmentDirections.actionEpisodeFragmentToEpisodeDetailFragment(id)
         findNavController().navigate(action)
+    }
+
+    private fun isNetworkAvailable(): Boolean{
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeInfo = connectivityManager.activeNetworkInfo
+        return activeInfo != null && activeInfo.isConnected
     }
 }

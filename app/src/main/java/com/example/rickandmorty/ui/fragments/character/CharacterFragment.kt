@@ -1,7 +1,9 @@
 package com.example.rickandmorty.ui.fragments.character
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,13 +12,14 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.ui.adapters.CharacterAdapter
 import com.example.rickandmorty.databinding.FragmentCharacterBinding
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterFragment :
     BaseFragment<FragmentCharacterBinding, CharacterViewModel>(R.layout.fragment_character) {
 
     override val binding by viewBinding(FragmentCharacterBinding::bind)
-    override val viewModel: CharacterViewModel by activityViewModels()
+    override val viewModel: CharacterViewModel by viewModels()
     private var characterAdapter = CharacterAdapter(this::onItemClick)
 
     override fun initialize() {
@@ -27,9 +30,13 @@ class CharacterFragment :
     }
 
     override fun setupObserves() {
-        lifecycleScope.launch {
-            viewModel.fetchCharacters().collect {
-                characterAdapter.submitData(it)
+        if (isNetworkAvailable()) {
+            viewModel.fetchCharacters().observe(viewLifecycleOwner) {
+                characterAdapter.submitList(it.results)
+            }
+        }else{
+            viewModel.getAll().observe(viewLifecycleOwner){
+                characterAdapter.submitList(it)
             }
         }
     }
@@ -38,5 +45,11 @@ class CharacterFragment :
         val action: NavDirections =
             CharacterFragmentDirections.actionCharacterFragmentToCharacterDetailFragment(id)
         findNavController().navigate(action)
+    }
+
+    private fun isNetworkAvailable(): Boolean{
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeInfo = connectivityManager.activeNetworkInfo
+        return activeInfo != null && activeInfo.isConnected
     }
 }

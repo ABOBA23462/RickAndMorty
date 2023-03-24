@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.databinding.ItemEpisodesBinding
 import com.example.rickandmorty.models.EpisodeModel
 
 class EpisodeAdapter(val onItemClick: (id: Int) -> Unit) :
-    PagingDataAdapter<EpisodeModel, EpisodeAdapter.ViewHolder>(diffUtil) {
+    ListAdapter<EpisodeModel, EpisodeAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: ItemEpisodesBinding) :
         RecyclerView.ViewHolder(binding.root) {

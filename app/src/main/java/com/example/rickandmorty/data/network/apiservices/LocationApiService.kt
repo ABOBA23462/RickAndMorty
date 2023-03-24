@@ -10,9 +10,9 @@ import retrofit2.http.Query
 interface LocationApiService {
 
     @GET("api/location")
-    suspend fun fetchLocation(
-        @Query("page") page: Int
-    ): RickAndMortyResponse<LocationsModel>
+     fun fetchLocation(
+//        @Query("page") page: Int
+    ): Call<RickAndMortyResponse<LocationsModel>>
 
     @GET("/api/location/{id}")
     fun fetchLocationDetail(@Path("id") id: Int): Call<LocationsModel>

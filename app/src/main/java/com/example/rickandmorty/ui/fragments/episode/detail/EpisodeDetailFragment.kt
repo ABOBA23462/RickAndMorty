@@ -1,4 +1,4 @@
-package com.example.rickandmorty.ui.fragments.episode.episodedetail
+package com.example.rickandmorty.ui.fragments.episode.detail
 
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs

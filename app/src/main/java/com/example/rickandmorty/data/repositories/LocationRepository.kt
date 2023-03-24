@@ -1,34 +1,67 @@
 package com.example.rickandmorty.data.repositories
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.example.rickandmorty.App
-import com.example.rickandmorty.data.repositories.pagingsources.LocationPagingSource
+import com.example.rickandmorty.data.db.daos.LocationDao
+import com.example.rickandmorty.data.network.apiservices.LocationApiService
+import com.example.rickandmorty.models.EpisodeModel
 import com.example.rickandmorty.models.LocationsModel
-import kotlinx.coroutines.flow.Flow
+import com.example.rickandmorty.models.RickAndMortyResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class LocationRepository {
+class LocationRepository
+@Inject constructor(
+    private val locationApiService: LocationApiService,
+    private val locationDao: LocationDao
+){
 
-    fun fetchLocation(): Flow<PagingData<LocationsModel>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = {
-                LocationPagingSource(App.locationApiService!!)
-            }).flow
+    fun fetchLocation(): MutableLiveData<RickAndMortyResponse<LocationsModel>> {
+        val data: MutableLiveData<RickAndMortyResponse<LocationsModel>> = MutableLiveData()
+        locationApiService.fetchLocation()
+            .enqueue(object : Callback<RickAndMortyResponse<LocationsModel>> {
+
+                override fun onResponse(
+                    call: Call<RickAndMortyResponse<LocationsModel>>,
+                    response: Response<RickAndMortyResponse<LocationsModel>>
+                ) {
+                    if (response.body() != null) {
+                        response.body().let {
+                            it?.let { it1 -> locationDao.insertAll(it1.results) }
+                        }
+                    }
+                    data.value = response.body()
+                }
+
+                override fun onFailure(
+                    call: Call<RickAndMortyResponse<LocationsModel>>,
+                    t: Throwable
+                ) {
+                    data.value = null
+                }
+            })
+        return data
     }
+
+
+//    fun fetchLocation(): Flow<PagingData<LocationsModel>> {
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = 10,
+//                enablePlaceholders = false
+//            ),
+//            pagingSourceFactory = {
+//                LocationPagingSource(App.locationApiService!!)
+//            }).flow
+//    }
 
     fun fetchLocationDetail(id: Int): MutableLiveData<LocationsModel> {
         val data: MutableLiveData<LocationsModel> = MutableLiveData()
-        App.locationApiService?.fetchLocationDetail(id)
-            ?.enqueue(object : Callback<LocationsModel> {
+        locationApiService.fetchLocationDetail(id)
+            .enqueue(object : Callback<LocationsModel> {
                 override fun onResponse(
                     call: Call<LocationsModel>,
                     response: Response<LocationsModel>
@@ -44,5 +77,8 @@ class LocationRepository {
                 }
             })
         return data
+    }
+    fun getAll(): LiveData<List<LocationsModel>> {
+        return locationDao.getAll()
     }
 }
