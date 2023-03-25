@@ -1,18 +1,19 @@
 package com.example.rickandmorty.ui.fragments.episode.detail
 
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentEpisodeDetailBinding
-import com.example.rickandmorty.ui.fragments.episode.EpisodeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EpisodeDetailFragment :
-    BaseFragment<FragmentEpisodeDetailBinding, EpisodeViewModel>(R.layout.fragment_episode_detail) {
+    BaseFragment<FragmentEpisodeDetailBinding, EpisodeDetailViewModel>(R.layout.fragment_episode_detail) {
 
     override val binding by viewBinding(FragmentEpisodeDetailBinding::bind)
-    override val viewModel: EpisodeViewModel by activityViewModels()
+    override val viewModel: EpisodeDetailViewModel by viewModels()
     private val args by navArgs<EpisodeDetailFragmentArgs>()
 
     override fun setupObserves() {

@@ -46,6 +46,10 @@ class LocationRepository
         return data
     }
 
+    fun getAll(): LiveData<List<LocationsModel>> {
+        return locationDao.getAll()
+    }
+
 
 //    fun fetchLocation(): Flow<PagingData<LocationsModel>> {
 //        return Pager(
@@ -77,8 +81,5 @@ class LocationRepository
                 }
             })
         return data
-    }
-    fun getAll(): LiveData<List<LocationsModel>> {
-        return locationDao.getAll()
     }
 }

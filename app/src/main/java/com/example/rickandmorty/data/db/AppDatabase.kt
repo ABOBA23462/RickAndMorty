@@ -6,8 +6,10 @@ import com.example.rickandmorty.data.db.daos.CharacterDao
 import com.example.rickandmorty.data.db.daos.EpisodeDao
 import com.example.rickandmorty.data.db.daos.LocationDao
 import com.example.rickandmorty.models.CharacterModel
+import com.example.rickandmorty.models.EpisodeModel
+import com.example.rickandmorty.models.LocationsModel
 
-@Database(entities = [CharacterModel::class], version = 1)
+@Database(entities = [CharacterModel::class, EpisodeModel::class, LocationsModel::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao
     abstract fun episodeDao(): EpisodeDao

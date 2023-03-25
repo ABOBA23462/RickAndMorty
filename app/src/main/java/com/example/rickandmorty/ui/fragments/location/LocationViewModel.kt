@@ -18,9 +18,5 @@ class LocationViewModel
 
     fun fetchLocation() = locationRepository.fetchLocation()
 
-    fun fetchLocationDetail(id: Int): MutableLiveData<LocationsModel> {
-        return locationRepository.fetchLocationDetail(id)
-    }
-
     fun getAll() = locationRepository.getAll()
 }

@@ -6,13 +6,14 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentLocationDetailBinding
-import com.example.rickandmorty.ui.fragments.location.LocationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LocationDetailFragment :
-    BaseFragment<FragmentLocationDetailBinding, LocationViewModel>(R.layout.fragment_location_detail) {
+    BaseFragment<FragmentLocationDetailBinding, LocationDetailViewModel>(R.layout.fragment_location_detail) {
 
     override val binding by viewBinding(FragmentLocationDetailBinding::bind)
-    override val viewModel: LocationViewModel by activityViewModels()
+    override val viewModel: LocationDetailViewModel by activityViewModels()
     private val args by navArgs<LocationDetailFragmentArgs>()
 
     override fun setupObserves() {

@@ -7,13 +7,14 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentCharacterDetailBinding
 import com.example.rickandmorty.extensions.setImage
-import com.example.rickandmorty.ui.fragments.character.CharacterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterDetailFragment :
-    BaseFragment<FragmentCharacterDetailBinding, CharacterViewModel>(R.layout.fragment_character_detail) {
+    BaseFragment<FragmentCharacterDetailBinding, CharacterDetailViewModel>(R.layout.fragment_character_detail) {
 
     override val binding by viewBinding(FragmentCharacterDetailBinding::bind)
-    override val viewModel: CharacterViewModel by activityViewModels()
+    override val viewModel: CharacterDetailViewModel by activityViewModels()
     private val args by navArgs<CharacterDetailFragmentArgs>()
 
     override fun setupObserves() {

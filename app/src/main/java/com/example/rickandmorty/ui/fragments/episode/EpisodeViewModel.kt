@@ -17,9 +17,5 @@ class EpisodeViewModel @Inject constructor(
 
     fun fetchEpisode() = episodeRepository.fetchEpisode()
 
-    fun fetchEpisodeDetail(id: Int): MutableLiveData<EpisodeModel> {
-        return episodeRepository.fetchEpisodeDetail(id)
-    }
-
     fun getAll() = episodeRepository.getAll()
 }

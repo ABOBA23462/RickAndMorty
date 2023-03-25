@@ -44,6 +44,10 @@ class EpisodeRepository
         return data
     }
 
+    fun getAll(): LiveData<List<EpisodeModel>> {
+        return episodeDao.getAll()
+    }
+
 //    fun fetchEpisode(): Flow<PagingData<EpisodeModel>> {
 //        return Pager(
 //            config = PagingConfig(
@@ -74,9 +78,5 @@ class EpisodeRepository
                 }
             })
         return data
-    }
-
-    fun getAll(): LiveData<List<EpisodeModel>> {
-        return episodeDao.getAll()
     }
 }
