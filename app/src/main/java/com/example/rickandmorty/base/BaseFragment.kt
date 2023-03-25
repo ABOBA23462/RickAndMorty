@@ -18,7 +18,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(@LayoutRes layoutI
         initialize()
         setupListeners()
         setupObserves()
-        getData()
     }
 
     protected open fun initialize() {}
@@ -26,6 +25,4 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(@LayoutRes layoutI
     protected open fun setupListeners() {}
 
     protected open fun setupObserves() {}
-
-    protected open fun getData() {}
 }

@@ -15,7 +15,6 @@ class CharacterRepository @Inject constructor(
     private val characterApiService: CharacterApiService,
     private val characterDao: CharacterDao
 ) {
-
     fun fetchCharacters(): MutableLiveData<RickAndMortyResponse<CharacterModel>> {
         val data: MutableLiveData<RickAndMortyResponse<CharacterModel>> = MutableLiveData()
         characterApiService.fetchCharacters()
@@ -25,7 +24,7 @@ class CharacterRepository @Inject constructor(
                     call: Call<RickAndMortyResponse<CharacterModel>>,
                     response: Response<RickAndMortyResponse<CharacterModel>>
                 ) {
-                    if (response.body() != null){
+                    if (response.body() != null) {
                         response.body().let {
                             it?.let { it1 -> characterDao.insertAll(it1.results) }
                         }
@@ -75,7 +74,7 @@ class CharacterRepository @Inject constructor(
         return data
     }
 
-    fun getAll(): LiveData<List<CharacterModel>>{
+    fun getAll(): LiveData<List<CharacterModel>> {
         return characterDao.getAll()
     }
 }

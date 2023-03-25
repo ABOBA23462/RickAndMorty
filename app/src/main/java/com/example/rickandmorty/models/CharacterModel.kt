@@ -2,7 +2,12 @@ package com.example.rickandmorty.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.rickandmorty.converter.Converters
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import retrofit2.http.Field
+import java.util.Objects
 
 @Entity
 data class CharacterModel(
@@ -25,4 +30,8 @@ data class CharacterModel(
 
     @SerializedName("type")
     val type: String,
+
+    @SerializedName("location")
+    @field:TypeConverters(Converters::class)
+    val location: Objects
 )

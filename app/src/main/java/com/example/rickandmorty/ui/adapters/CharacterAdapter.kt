@@ -29,6 +29,7 @@ class CharacterAdapter(val onItemClick: (id: Int) -> Unit) :
             tvCharacterSpecies.text = item?.species
             tvCharacterType.text = item?.type
             ivCharactersPicture.setImage(item!!.image)
+            obj.text = item.location.toString()
         }
     }
 

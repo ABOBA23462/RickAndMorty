@@ -93,6 +93,16 @@
         app:layout_constraintStart_toStartOf="@id/tv_dimension"
         app:layout_constraintTop_toBottomOf="@id/tv_dimension" />
 
+    <TextView
+        android:id="@+id/obj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/iv_characters_picture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="object"
+        android:textColor="@color/white"/>
+
     <!--    <TextView-->
     <!--        android:id="@+id/tv_first_seen"-->
     <!--        android:layout_width="wrap_content"-->
