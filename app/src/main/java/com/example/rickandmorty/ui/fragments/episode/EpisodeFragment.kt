@@ -3,9 +3,7 @@ package com.example.rickandmorty.ui.fragments.episode
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +13,6 @@ import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentEpisodeBinding
 import com.example.rickandmorty.ui.adapters.EpisodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EpisodeFragment :
@@ -44,12 +41,6 @@ class EpisodeFragment :
         }
     }
 
-    private fun onItemClick(id: Int) {
-        val action: NavDirections =
-            EpisodeFragmentDirections.actionEpisodeFragmentToEpisodeDetailFragment(id)
-        findNavController().navigate(action)
-    }
-
     private fun isNetworkAvailable(): Boolean{
         val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false
@@ -60,5 +51,11 @@ class EpisodeFragment :
             activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             else -> false
         }
+    }
+
+    private fun onItemClick(id: Int) {
+        val action: NavDirections =
+            EpisodeFragmentDirections.actionEpisodeFragmentToEpisodeDetailFragment(id)
+        findNavController().navigate(action)
     }
 }

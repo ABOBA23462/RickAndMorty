@@ -1,6 +1,7 @@
 package com.example.rickandmorty.ui.fragments.character.detail
 
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.rickandmorty.R
@@ -14,7 +15,7 @@ class CharacterDetailFragment :
     BaseFragment<FragmentCharacterDetailBinding, CharacterDetailViewModel>(R.layout.fragment_character_detail) {
 
     override val binding by viewBinding(FragmentCharacterDetailBinding::bind)
-    override val viewModel: CharacterDetailViewModel by activityViewModels()
+    override val viewModel: CharacterDetailViewModel by viewModels()
     private val args by navArgs<CharacterDetailFragmentArgs>()
 
     override fun setupObserves() {
